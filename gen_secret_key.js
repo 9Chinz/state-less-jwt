@@ -1,0 +1,1 @@
+console.log(`TOKEN_SECRET=${require('crypto').randomBytes(256).toString('hex')}`)
