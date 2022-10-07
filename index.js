@@ -38,6 +38,17 @@ app.get('/', middlewareGame, (req, res) => {
 
 //* requirement when for get link
 const middlewareAPI = (req, res, next) => {
+
+    const x_id = req.headers['x-client-id']
+    const x_secret = req.headers['x-client-secret']
+
+    if (x_id !== process.env.X_CLIENT_ID || x_secret !== process.env.X_CLIENT_SECRET){
+        return res.status(401).json({
+            code : 401,
+            errors : "Unauthorized"
+        });
+    }
+
     const {reference, game_id, configuration} = req.body;
     if (Object.keys(req.body).length != 3){
         let error_field = {};
@@ -69,7 +80,7 @@ const middlewareAPI = (req, res, next) => {
         return res.status(404).json({
             code : 404,
             errors : "Not success, No Play Game",
-            error_code : "error(40401) No record in Game"
+            error_code : "error(40401) No Game in record"
         });
     }
 
