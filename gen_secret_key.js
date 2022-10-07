@@ -1,1 +1,1 @@
-console.log(`TOKEN_SECRET=${require('crypto').randomBytes(256).toString('hex')}`)
+console.log(`TOKEN_SECRET=${require('crypto').randomBytes(256).toString('hex')}\nGAME_ID=5`)

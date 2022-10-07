@@ -1,14 +1,10 @@
 const express = require("express");
 
-const path = require('path');
 const router = express.Router();
 
 const app = express();
 
-const os = require("os");
-
 app.use(express.json())
-app.use('/', router);
 
 const jwt = require("jsonwebtoken");
 const extractJwt = require("passport-jwt").ExtractJwt;
@@ -18,6 +14,7 @@ const passport = require("passport");
 const dotEnv = require("dotenv");
 dotEnv.config();
 const SECRET_KEY = process.env.TOKEN_SECRET;
+const GAME_ID = process.env.GAME_ID;
 
 const jwtOption = {
     jwtFromRequest: extractJwt.fromUrlQueryParameter("accessToken"),
@@ -25,12 +22,10 @@ const jwtOption = {
 };
 
 const jwtAuth = new strategyJwt(jwtOption, (payload, done) => {
-    console.log(payload)
-    if(payload.game_id === "00001"){
-        done(null, true);
-    }else{
-        done(null, false);
+    if (payload.game_id !== GAME_ID){
+        return done(null, false);
     }
+    return done(null, true);
 });
 
 passport.use(jwtAuth);
@@ -38,7 +33,7 @@ const middlewareGame = passport.authenticate("jwt", {session:false});
 
 //* play game link and get
 app.get('/', middlewareGame, (req, res) => {
-    res.sendFile(path.join(__dirname+'/view/index.html'));
+    res.send('this should be frontend check')
 });
 
 //* requirement when for get link
@@ -70,11 +65,11 @@ const middlewareAPI = (req, res, next) => {
     } 
 
     //! check game_id if not success, no play game : code 404
-    if (game_id != "00001"){
+    if (game_id != GAME_ID){
         return res.status(404).json({
             code : 404,
             errors : "Not success, No Play Game",
-            error_code : "error(404) no game ไม่มีเกม"
+            error_code : "error(40401) No record in Game"
         });
     }
 
