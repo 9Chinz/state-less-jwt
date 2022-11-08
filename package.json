@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js",
-    "new-key": "node .\\gen_secret_key.js > .env"
+    "start": "set NODE_ENV=development&& node index.js",
+    "dev": "set NODE_ENV=development&& pm2 start index.js",
+    "prod": "set NODE_ENV=production&& pm2 start index.js"
   },
   "keywords": [],
   "author": "",

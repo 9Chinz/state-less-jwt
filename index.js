@@ -1,7 +1,5 @@
 const express = require("express");
 
-const router = express.Router();
-
 const app = express();
 
 app.use(express.json())
@@ -11,10 +9,9 @@ const extractJwt = require("passport-jwt").ExtractJwt;
 const strategyJwt = require("passport-jwt").Strategy;
 const passport = require("passport");
 
-const dotEnv = require("dotenv");
-dotEnv.config();
-const SECRET_KEY = process.env.TOKEN_SECRET;
-const GAME_ID = process.env.GAME_ID;
+const config =  require('./config.js');
+const SECRET_KEY = config.TOKEN_SECRET;
+const GAME_ID = config.GAME_ID;
 
 const jwtOption = {
     jwtFromRequest: extractJwt.fromUrlQueryParameter("accessToken"),
@@ -38,11 +35,9 @@ app.get('/', middlewareGame, (req, res) => {
 
 //* requirement when for get link
 const middlewareAPI = (req, res, next) => {
-
     const x_id = req.headers['x-client-id']
     const x_secret = req.headers['x-client-secret']
-
-    if (x_id !== process.env.X_CLIENT_ID || x_secret !== process.env.X_CLIENT_SECRET){
+    if (x_id !== config.X_CLIENT_ID || x_secret !== config.X_CLIENT_SECRET){
         return res.status(401).json({
             code : 401,
             errors : "Unauthorized"
@@ -100,8 +95,10 @@ app.post('/api/game', middlewareAPI, (req, res) => {
     return res.status(200).json({
         code : 200,
         message : "Success",
-        dynamicUrl : `https://penalty-game.com?gameID=${game_id}&accessToken=${jwt.sign(payload, SECRET_KEY, {expiresIn: '24h'})}`
+        dynamicUrl : `${config.END_POINT}?gameID=${game_id}&accessToken=${jwt.sign(payload, SECRET_KEY, {expiresIn: '24h'})}`
     });
 });
 
-app.listen(3000);
+app.listen(3000, ()=>{
+    console.log(`listening on port 3000 env:${process.env.NODE_ENV}`)
+});
