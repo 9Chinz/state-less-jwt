@@ -30,6 +30,7 @@ const middlewareGame = passport.authenticate("jwt", {session:false});
 
 //* play game link and get
 app.get('/', middlewareGame, (req, res) => {
+    console.log(`monit is working | current env ${process.env.NODE_ENV} | secret key ${SECRET_KEY}`)
     res.send('this should be frontend check')
 });
 
@@ -38,6 +39,7 @@ const middlewareAPI = (req, res, next) => {
     const x_id = req.headers['x-client-id']
     const x_secret = req.headers['x-client-secret']
     if (x_id !== config.X_CLIENT_ID || x_secret !== config.X_CLIENT_SECRET){
+        console.log(`error 401: Unauthorized| {user_side} x-id: ${x_id} x-secret ${x_secret} | {server_side} x-id: ${config.X_CLIENT_ID} x-secret ${config.X_CLIENT_SECRET}`)
         return res.status(401).json({
             code : 401,
             errors : "Unauthorized"
@@ -56,6 +58,7 @@ const middlewareAPI = (req, res, next) => {
         if (configuration == undefined){
             error_field.configuration = ["The configuration field is required"];
         }
+        console.log(`error 422: error_field | reference ${reference} | game_id ${game_id} | config ${configuration}`)
         return res.status(422).json({
             code : 422,
             errors : error_field
@@ -64,6 +67,7 @@ const middlewareAPI = (req, res, next) => {
 
     //! check ref_id is authorized or not : code 401
     if (reference.length != 40 || reference == null || configuration['credit'] <= 0){
+        console.log(`error 401: Unauthorized | reference len ${reference.length} | credit ${configuration['credit']}`)
         return res.status(401).json({
             code : 401,
             errors : "Unauthorized"
@@ -72,6 +76,7 @@ const middlewareAPI = (req, res, next) => {
 
     //! check game_id if not success, no play game : code 404
     if (game_id != GAME_ID){
+        console.log(`error 404:Not found game | game-id ${game_id}`)
         return res.status(404).json({
             code : 404,
             errors : "Not success, No Play Game",
@@ -92,6 +97,7 @@ app.post('/api/game', middlewareAPI, (req, res) => {
         "configuration": configuration,
         "iat": new Date().getTime()
     };
+    console.log(`success 200: ${payload}`)
     return res.status(200).json({
         code : 200,
         message : "Success",
