@@ -100,7 +100,7 @@ app.post('/api/game', middlewareAPI, (req, res) => {
         "configuration": configuration,
         "iat": new Date().getTime()
     };
-    console.log(`${timestamp} success 200: ${payload}`)
+    console.log(`${timestamp} success 200: ${JSON.stringify(payload)}`)
     return res.status(200).json({
         code : 200,
         message : "Success",
