@@ -15,6 +15,7 @@ module.exports = {
     API_ENDPOINT_MCARD: process.env.API_ENDPOINT_MCARD,
     X_CLIENT_ID_MCARD: process.env.X_CLIENT_ID_MCARD,
     X_CLIENT_SECRET_MCARD: process.env.X_CLIENT_SECRET_MCARD,
-    X_APP_ID: process.env.X_APP_ID
+    X_APP_ID: process.env.X_APP_ID,
+    PORT: process.env.PORT
 
 }

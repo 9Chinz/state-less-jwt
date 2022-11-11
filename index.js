@@ -108,6 +108,6 @@ app.post('/api/game', middlewareAPI, (req, res) => {
     });
 });
 
-app.listen(3000, ()=>{
-    console.log(`listening on port 3000 env:${process.env.NODE_ENV}`)
+app.listen(config.PORT, ()=>{
+    console.log(`listening on port ${config.PORT} env:${process.env.NODE_ENV}`)
 });

@@ -1,13 +1,17 @@
 module.exports = {
   apps : [{
-    name   : "backend-app",
+    name   : "backend-app-dev",
     script : "./index.js",
     watch: true,
-    env_production: {
-      NODE_ENV: "production"
-    },
-    env_development:{
+    env:{
       NODE_ENV: "development"
+    }
+  },{
+    name   : "backend-app-prod",
+    script : "./index.js",
+    watch: true,
+    env: {
+      NODE_ENV: "production"
     }
   }]
 }
