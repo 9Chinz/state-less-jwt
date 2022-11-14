@@ -59,7 +59,7 @@ const middlewareAPI = (req, res, next) => {
         if (configuration == undefined){
             error_field.configuration = ["The configuration field is required"];
         }
-        console.error(`${timestamp} error 422: error_field | reference ${reference} | game_id ${game_id} | config ${configuration}`)
+        console.error(`${timestamp} error 422: error_field | reference ${reference} | game_id ${game_id} | config ${JSON.stringify(configuration)}`)
         return res.status(422).json({
             code : 422,
             errors : error_field
