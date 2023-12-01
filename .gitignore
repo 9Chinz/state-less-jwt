@@ -2,6 +2,6 @@
 
 .env.old
 
-development.env
+/development.env
 
-production.env
+/production.env
